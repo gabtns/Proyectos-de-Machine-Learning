@@ -1,0 +1,219 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/gabtns/Proyectos-de-Machine-Learning/blob/main/Modelo%20de%20entrenamiento%20lineal\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "import matplotlib.pyplot as plt\n",
+        "from sklearn.metrics import r2_score\n",
+        "from sklearn import datasets,linear_model\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "\n",
+        "df=pd.read_csv(\"/content/base_datos_2008.csv\")"
+      ],
+      "metadata": {
+        "id": "hGVucNjTsVwH"
+      },
+      "execution_count": 94,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.columns"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "yHBp1gfnslNm",
+        "outputId": "0ec49cbc-cb8b-4b79-f3f6-037c94c50c84"
+      },
+      "execution_count": 95,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['Year', 'Month', 'DayofMonth', 'DayOfWeek', 'DepTime', 'CRSDepTime',\n",
+              "       'ArrTime', 'CRSArrTime', 'UniqueCarrier', 'FlightNum', 'TailNum',\n",
+              "       'ActualElapsedTime', 'CRSElapsedTime', 'AirTime', 'ArrDelay',\n",
+              "       'DepDelay', 'Origin', 'Dest', 'Distance', 'TaxiIn', 'TaxiOut',\n",
+              "       'Cancelled', 'CancellationCode', 'Diverted', 'CarrierDelay',\n",
+              "       'WeatherDelay', 'NASDelay', 'SecurityDelay', 'LateAircraftDelay'],\n",
+              "      dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 95
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df=df.dropna(subset=['AirTime', 'ArrDelay','DepDelay', 'Origin', 'Dest', 'Distance', 'TaxiIn', 'TaxiOut'])\n",
+        "df=df.sample(frac=1).head(300000)\n",
+        "y=df[['DepDelay','Distance']]\n",
+        "x=df[['ArrDelay']]"
+      ],
+      "metadata": {
+        "id": "ed6eIlypuMv0"
+      },
+      "execution_count": 107,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Se crea el modelo\n",
+        "mol=linear_model.LinearRegression()\n"
+      ],
+      "metadata": {
+        "id": "PyqpcO1Hu418"
+      },
+      "execution_count": 108,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Se entrena el modelo\n",
+        "mol.fit(x,y)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "10l_bzYv0i3W",
+        "outputId": "e66646b7-ba8f-4a66-d8c7-9a4ec67934b1"
+      },
+      "execution_count": 109,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "LinearRegression()"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 109
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Valor de Beta\n",
+        "print(\"Coeficiente: \",mol.coef_)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "8O_c8heW1PHT",
+        "outputId": "58e26615-11e3-4a4e-8b6c-d29e0d3b1ee4"
+      },
+      "execution_count": 111,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Coeficiente:  [[ 0.82769249]\n",
+            " [-0.31397141]]\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#Valores generados por el modelo\n",
+        "predic=mol.predict(x)\n",
+        "predic"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-D01CDz631OG",
+        "outputId": "ae833465-1d17-4a54-80ed-5266afa8f4fd"
+      },
+      "execution_count": 115,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[ -8.22721551, 717.97789493],\n",
+              "       [120.06512026, 669.31232627],\n",
+              "       [ 17.43125165, 708.24478119],\n",
+              "       ...,\n",
+              "       [ 55.50510613, 693.8020963 ],\n",
+              "       [-12.36567795, 719.54775198],\n",
+              "       [  0.87740187, 714.52420941]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 115
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "#% de varianza que tiene el modelo\n",
+        "print(\"R cuadrado: \",r2_score(y,predic))"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "XrIWQhOL1mT0",
+        "outputId": "0a1068d8-6df8-4d5b-9ed3-025e914e18a5"
+      },
+      "execution_count": 113,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "R cuadrado:  0.42592598240134727\n"
+          ]
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "name": "Untitled4.ipynb",
+      "provenance": [],
+      "collapsed_sections": [],
+      "authorship_tag": "ABX9TyNcvCiRpV41Pedsrm4Lvipc",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
