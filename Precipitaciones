@@ -1,0 +1,212 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/gabtns/Proyectos-de-Machine-Learning/blob/main/Precipitaciones\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "import numpy as np\n",
+        "from sklearn import preprocessing\n",
+        "df=pd.read_csv('/content/ny_precipitaciones.csv')\n",
+        "df.index\n",
+        "\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "OK-laNEVaTO7",
+        "outputId": "793de33a-456c-4983-b079-64f48d7a841a"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "RangeIndex(start=0, stop=2000, step=1)"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 268
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.metrics import r2_score\n",
+        "from sklearn.linear_model import LogisticRegression\n",
+        "\n",
+        "df=df.dropna(subset=['MLY-PRCP-NORMAL','MLY-PRCP-75PCTL'])\n",
+        "df=df.sample(frac=1).head(2000)\n",
+        "y=df['MLY-PRCP-75PCTL']<3.00\n",
+        "x=df[['MLY-PRCP-NORMAL']]"
+      ],
+      "metadata": {
+        "id": "umLbCDuTFLrB"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "\n",
+        "modelo=LogisticRegression()\n",
+        "modelo.fit(x,y)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "1NAL10SQGt5I",
+        "outputId": "ec9f8c26-86f2-47ec-8e3b-bef16351ebdd"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "LogisticRegression()"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 270
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "y_pred=modelo.predict(x)"
+      ],
+      "metadata": {
+        "id": "sxWfCIdLKeOg"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "np.mean(y_pred==y)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "TLW0gJb7KlWK",
+        "outputId": "f8438148-5f90-4da2-e827-3f9a640df908"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.9765319426336375"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 272
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "np.mean(y)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "bxtWP3YIMuZ6",
+        "outputId": "fecee17e-c90e-4f24-f16d-f02cfd75c24f"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "0.08344198174706649"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 273
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "from sklearn.metrics import confusion_matrix\n",
+        "confusion=confusion_matrix(y_pred,y)\n",
+        "confusion"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "K6LZAQfJLGq4",
+        "outputId": "d322f3f8-27b0-49bb-d2fe-f894c8cb4010"
+      },
+      "execution_count": null,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "array([[1394,   24],\n",
+              "       [  12,  104]])"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 274
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "Ei9zVrDvkpfT"
+      },
+      "execution_count": null,
+      "outputs": []
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "collapsed_sections": [],
+      "name": "Untitled4.ipynb",
+      "provenance": [],
+      "authorship_tag": "ABX9TyNYaO0Vh4c52/6GxLPlThX8",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
