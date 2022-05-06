@@ -1,0 +1,244 @@
+{
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/gabtns/Proyectos-de-Machine-Learning/blob/main/Escalado%20de%20datos%20\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import numpy as np\n",
+        "import pandas as pd\n",
+        "from sklearn import preprocessing\n",
+        "df=pd.read_csv('/content/covid_total_diario.csv')"
+      ],
+      "metadata": {
+        "id": "vmpUIwaomeMg"
+      },
+      "execution_count": 21,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df.columns"
+      ],
+      "metadata": {
+        "id": "Rg2wDrjWm4NT",
+        "outputId": "18468974-d123-4503-bfc8-8d3e05209f0b",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 22,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "Index(['fecha', 'total_1ra_y_2da_dosis_aplicadas'], dtype='object')"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 22
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df2=df['total_1ra_y_2da_dosis_aplicadas'].dropna()"
+      ],
+      "metadata": {
+        "id": "fmiGtExyoOQC"
+      },
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo=preprocessing.scale(df2)"
+      ],
+      "metadata": {
+        "id": "BuwVNUqAnsUF"
+      },
+      "execution_count": 25,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Escalado de los datos de vacunacion"
+      ],
+      "metadata": {
+        "id": "fGvV2EvPshcf"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo.mean(axis=0)"
+      ],
+      "metadata": {
+        "id": "D5MLaRokpSji",
+        "outputId": "6ad73c80-ec81-4aff-81f8-4ea3edf15ab1",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 32,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "-3.109596217768491e-17"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 32
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo.std(axis=0)"
+      ],
+      "metadata": {
+        "id": "20XaU5PDqPNE",
+        "outputId": "b47ce55b-1ede-4b37-8853-5886cd2198ac",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 33,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "1.0"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 33
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "modelo[2]"
+      ],
+      "metadata": {
+        "id": "a_0PhRv6qS3X",
+        "outputId": "9bfb4286-3320-49fa-bab3-ddbe030f6983",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 36,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "-1.4062869608276864"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 36
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df2.iloc[2]"
+      ],
+      "metadata": {
+        "id": "Ni9-_nJmqps9",
+        "outputId": "7a215d20-48c2-4eaf-f6b7-bdde77b4e9a8",
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        }
+      },
+      "execution_count": 42,
+      "outputs": [
+        {
+          "output_type": "execute_result",
+          "data": {
+            "text/plain": [
+              "2805"
+            ]
+          },
+          "metadata": {},
+          "execution_count": 42
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "32NBbi247tmm"
+      },
+      "execution_count": null,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        "## Obteniendo dummies "
+      ],
+      "metadata": {
+        "id": "meThQgt-7uQu"
+      }
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "ejemplo=pd.get_dummies(df['total_1ra_y_2da_dosis_aplicadas'])\n",
+        "#Es necesario tener en cuenta este paso porque consume mucha memoria al crear columnas. "
+      ],
+      "metadata": {
+        "id": "RD6GLsbE0mt8"
+      },
+      "execution_count": 51,
+      "outputs": []
+    },
+    {
+      "cell_type": "markdown",
+      "source": [
+        ""
+      ],
+      "metadata": {
+        "id": "wUFADQ4z7sE0"
+      }
+    }
+  ],
+  "metadata": {
+    "colab": {
+      "collapsed_sections": [],
+      "name": "Overview of Colaboratory Features",
+      "provenance": [],
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "display_name": "Python 3",
+      "name": "python3"
+    }
+  },
+  "nbformat": 4,
+  "nbformat_minor": 0
+}
